@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B2B ICP & Demand Generation Planner</title>
+  <style>
+    :root {
+      --paper: #fbfaf7;
+      --panel: #ffffff;
+      --ink: #1f2430;
+      --ink-soft: #5b6270;
+      --line: #dcd8cf;
+      --navy: #22314f;
+      --navy-deep: #16203a;
+      --amber: #c8842a;
+      --amber-soft: #f4e3c6;
+      --moss: #4c7a5e;
+      --moss-soft: #e2ede6;
+      --rust: #b6472f;
+      --rust-soft: #f6e0da;
+      --font-display: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'Courier New', Courier, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 12px;
+      background: #ece8df;
+      font-family: var(--font-body);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    .icp-wrap {
+      background: var(--paper);
+      color: var(--ink);
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .icp-head {
+      background: linear-gradient(150deg, var(--navy-deep) 0%, var(--navy) 100%);
+      border-radius: 10px;
+      padding: 28px 24px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .icp-head::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 160px;
+      height: 160px;
+      border: 2px solid rgba(200, 132, 42, 0.35);
+      border-radius: 50%;
+    }
+
+    .icp-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--amber-soft);
+      margin: 0 0 8px 0;
+    }
+
+    .icp-head h1 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 6px 0;
+      line-height: 1.25;
+    }
+
+    .icp-head p {
+      font-size: 0.95rem;
+      color: #cdd4e2;
+      margin: 0;
+      max-width: 680px;
+    }
+
+    .icp-setup {
+      background: var(--amber-soft);
+      border: 1px solid #e3c48c;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+    }
+
+    .icp-setup h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      margin: 0 0 4px 0;
+      color: var(--navy-deep);
+    }
+
+    .icp-setup .icp-setup-hint {
+      font-size: 0.82rem;
+      color: #6b5227;
+      margin-bottom: 12px;
+    }
+
+    .icp-setup-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .icp-setup-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .icp-setup label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #6b5227;
+      margin-bottom: 4px;
+    }
+
+    .icp-setup input[type=text] {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #d9bc84;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      background: #fffdf8;
+      color: var(--ink);
+    }
+
+    .icp-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    @media (min-width: 640px) {
+      .icp-nav {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .icp-nav-btn {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 12px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      font-family: var(--font-body);
+      transition: all 0.15s ease;
+    }
+
+    .icp-nav-btn:hover {
+      background: #f1eee6;
+    }
+
+    .icp-nav-btn.active {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+
+    .icp-view {
+      display: none;
+    }
+
+    .icp-view.active {
+      display: block;
+    }
+
+    .icp-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-bottom: 16px;
+    }
+
+    @media (min-width: 900px) {
+      .icp-grid-2 {
+        grid-template-columns: 420px 1fr;
+      }
+      .icp-grid-2.split-even {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .icp-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .icp-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: var(--navy-deep);
+      margin: 0 0 14px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--amber-soft);
+    }
+
+    .icp-select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+      font-size: 0.88rem;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .icp-textarea {
+      width: 100%;
+      min-height: 320px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      padding: 14px;
+      border: 1px solid #b9c0cc;
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--ink);
+      resize: vertical;
+      margin-bottom: 10px;
+    }
+
+    .icp-cart-box {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      background: #ffffff;
+      max-height: 220px;
+      overflow-y: auto;
+      margin-top: 8px;
+    }
+
+    .icp-cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      margin-bottom: 6px;
+      font-size: 0.82rem;
+    }
+
+    .icp-btn-remove {
+      background: var(--rust);
+      color: #fff;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.72rem;
+      flex-shrink: 0;
+    }
+
+    .icp-btn-remove:hover {
+      background: #8f3521;
+    }
+
+    .icp-btn {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.84rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-body);
+    }
+
+    .icp-btn:hover {
+      background: var(--navy-deep);
+    }
+
+    .icp-btn-accent {
+      background: var(--moss);
+    }
+
+    .icp-btn-accent:hover {
+      background: #3a614a;
+    }
+
+    .icp-btn-danger {
+      background: var(--rust);
+      margin-left: 6px;
+    }
+
+    .icp-btn-danger:hover {
+      background: #8f3521;
+    }
+
+    .icp-controls {
+      background: var(--paper);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      margin-bottom: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icp-filter-box {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .icp-filter-box {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .icp-filter-box label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+      display: block;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .icp-badge {
+      font-size: 0.76rem;
+      background: var(--moss-soft);
+      color: #2c4d3a;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      margin-left: auto;
+    }
+
+    .icp-blueprint-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--amber);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .icp-section-title {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--navy);
+      font-weight: 700;
+      margin-top: 14px;
+      margin-bottom: 5px;
+      padding-bottom: 2px;
+      border-bottom: 1px dashed var(--line);
+    }
+
+    .icp-text {
+      font-size: 0.88rem;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .icp-record-tag {
+      font-size: 0.72rem;
+      background: var(--navy);
+      color: #fff;
+      padding: 2px 9px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .icp-empty {
+      color: #9a9488;
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 28px 8px;
+    }
+
+    @media (max-width: 480px) {
+      .icp-head h1 { font-size: 1.35rem; }
+      .icp-textarea { min-height: 240px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="icp-wrap">
+  <div class="icp-head">
+    <p class="icp-eyebrow">ICP &amp; Demand Generation Workbench</p>
+    <h1>Ideal Customer Profile Planner</h1>
+    <p>Build targeted account strategies, bulk keyword and FAQ lists, ad copy, and outreach emails for any product, in any industry.</p>
+  </div>
+
+  <div class="icp-setup">
+    <h3>1. Quick setup</h3>
+    <p class="icp-setup-hint">Fill this in once. It personalizes every generator below - change it any time and re-generate.</p>
+    <div class="icp-setup-grid">
+      <div>
+        <label for="cfg-company">Your Company / Brand Name</label>
+        <input type="text" id="cfg-company" class="icp-select" style="margin-bottom:0;" placeholder="e.g. Northgate Supply Co." value="Your Company">
+      </div>
+      <div>
+        <label for="cfg-product">Your Product / Service Name</label>
+        <input type="text" id="cfg-product" class="icp-select" style="margin-bottom:0;" placeholder="e.g. inventory management platform" value="your product or service">
+      </div>
+    </div>
+  </div>
+
+  <div class="icp-nav">
+    <button class="icp-nav-btn active" onclick="icpSwitchView('view-icp', this)">ICP Cart &amp; Playbooks</button>
+    <button class="icp-nav-btn" onclick="icpSwitchView('view-keywords', this)">Keywords &amp; FAQs</button>
+    <button class="icp-nav-btn" onclick="icpSwitchView('view-ads', this)">Ad Headlines &amp; Copy</button>
+    <button class="icp-nav-btn" onclick="icpSwitchView('view-sales', this)">Outreach Email Builder</button>
+  </div>
+
+  <!-- VIEW 1: ICP -->
+  <div id="view-icp" class="icp-view active">
+    <div class="icp-card">
+      <h2>Target Industry &amp; Buyer Persona Planner</h2>
+      <div class="icp-grid-2">
+        <div>
+          <label style="font-weight:700; font-size:0.8rem; color:var(--ink-soft); display:block; margin-bottom:4px;">Target Industry:</label>
+          <select id="sel-industry" class="icp-select"></select>
+
+          <label style="font-weight:700; font-size:0.8rem; color:var(--ink-soft); display:block; margin-bottom:4px;">Target Buyer Persona:</label>
+          <select id="sel-role" class="icp-select"></select>
+
+          <div style="margin: 10px 0;">
+            <button class="icp-btn" onclick="icpAddToCart()">Add to Planning Cart</button>
+            <button class="icp-btn icp-btn-danger" onclick="icpClearCart()">Clear All</button>
+          </div>
+
+          <h4 style="font-size:0.88rem; margin-top:18px; color:var(--navy-deep); font-weight:700;">Active Selection Cart</h4>
+          <div class="icp-cart-box" id="cart-container">
+            <p class="icp-empty">Your planning cart is empty.</p>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="color:var(--navy-deep); margin-bottom:12px; font-size:1rem; display:flex; justify-content:space-between; align-items:center; font-weight:700;">
+            <span>Account Strategy Playbooks</span>
+            <span id="queue-counter" class="icp-badge">0 Active</span>
+          </h4>
+          <div id="abm-queue-pane" style="background:var(--paper); border:1px solid var(--line); padding:12px; border-radius:8px; max-height:600px; overflow-y:auto;">
+            <p class="icp-empty">No accounts mapped yet. Choose an industry and persona, then add them to the cart.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 2: KEYWORDS & FAQS -->
+  <div id="view-keywords" class="icp-view">
+    <div class="icp-grid-2 split-even">
+      <div class="icp-card">
+        <h2>Buyer-Intent Keyword Generator</h2>
+        <div class="icp-filter-box">
+          <div>
+            <label>Offering:</label>
+            <select id="fk-tech" class="icp-select" style="margin-bottom:0;"></select>
+          </div>
+          <div>
+            <label>Search Intent Focus:</label>
+            <select id="fk-category" class="icp-select" style="margin-bottom:0;"></select>
+          </div>
+        </div>
+        <div class="icp-controls">
+          <button class="icp-btn" onclick="icpGenerateBulkKeywords()">Generate 80 Keywords</button>
+          <button class="icp-btn icp-btn-accent" onclick="icpCopyTextData('kw-bulk-output')">Copy All</button>
+          <span id="kw-count-lbl" class="icp-badge">0 Generated</span>
+        </div>
+        <textarea id="kw-bulk-output" class="icp-textarea" placeholder="Generated keywords will appear here..."></textarea>
+      </div>
+
+      <div class="icp-card">
+        <h2>Customer Question &amp; FAQ Matrix</h2>
+        <div class="icp-filter-box">
+          <div>
+            <label>Offering:</label>
+            <select id="fq-tech" class="icp-select" style="margin-bottom:0;"></select>
+          </div>
+          <div>
+            <label>Question Focus:</label>
+            <select id="fq-category" class="icp-select" style="margin-bottom:0;"></select>
+          </div>
+        </div>
+        <div class="icp-controls">
+          <button class="icp-btn" onclick="icpGenerateBulkQuestions()">Generate 55 FAQs</button>
+          <button class="icp-btn icp-btn-accent" onclick="icpCopyTextData('faq-bulk-output')">Copy All</button>
+          <span id="faq-count-lbl" class="icp-badge">0 Generated</span>
+        </div>
+        <textarea id="faq-bulk-output" class="icp-textarea" placeholder="Generated FAQs will appear here..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 3: ADS -->
+  <div id="view-ads" class="icp-view">
+    <div class="icp-grid-2 split-even">
+      <div class="icp-card">
+        <h2>Ad Headline Generator</h2>
+        <div class="icp-filter-box">
+          <div>
+            <label>Offering:</label>
+            <select id="fh-tech" class="icp-select" style="margin-bottom:0;"></select>
+          </div>
+          <div>
+            <label>Value Prop Hook:</label>
+            <select id="fh-category" class="icp-select" style="margin-bottom:0;"></select>
+          </div>
+        </div>
+        <div class="icp-controls">
+          <button class="icp-btn" onclick="icpGenerateBulkHeadlines()">Generate 60 Headlines</button>
+          <button class="icp-btn icp-btn-accent" onclick="icpCopyTextData('hl-bulk-output')">Copy All</button>
+          <span id="hl-count-lbl" class="icp-badge">0 Generated</span>
+        </div>
+        <textarea id="hl-bulk-output" class="icp-textarea" placeholder="Generated headlines will appear here..."></textarea>
+      </div>
+
+      <div class="icp-card">
+        <h2>Ad Description Generator</h2>
+        <div class="icp-filter-box">
+          <div>
+            <label>Offering:</label>
+            <select id="fd-tech" class="icp-select" style="margin-bottom:0;"></select>
+          </div>
+          <div>
+            <label>Value Prop Hook:</label>
+            <select id="fd-category" class="icp-select" style="margin-bottom:0;"></select>
+          </div>
+        </div>
+        <div class="icp-controls">
+          <button class="icp-btn" onclick="icpGenerateBulkDescriptions()">Generate 40 Descriptions</button>
+          <button class="icp-btn icp-btn-accent" onclick="icpCopyTextData('desc-bulk-output')">Copy All</button>
+          <span id="desc-count-lbl" class="icp-badge">0 Generated</span>
+        </div>
+        <textarea id="desc-bulk-output" class="icp-textarea" placeholder="Generated descriptions will appear here..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 4: OUTREACH EMAILS -->
+  <div id="view-sales" class="icp-view">
+    <div class="icp-card">
+      <h2>Cold Outreach Email Builder</h2>
+      <p style="font-size:0.85rem; color:var(--ink-soft); margin:-6px 0 14px 0;">Generates full, human-sounding emails - subject line, greeting, body, and sign-off - ready to paste into your outbound sequence.</p>
+      <div class="icp-filter-box">
+        <div>
+          <label>Offering:</label>
+          <select id="fp-tech" class="icp-select" style="margin-bottom:0;"></select>
+        </div>
+        <div>
+          <label>Buyer Objection / Friction Point:</label>
+          <select id="fp-category" class="icp-select" style="margin-bottom:0;"></select>
+        </div>
+      </div>
+      <div class="icp-controls">
+        <button class="icp-btn" onclick="icpGenerateBulkPitches()">Generate Outreach Emails</button>
+        <button class="icp-btn icp-btn-accent" onclick="icpCopyTextData('pitch-bulk-output')">Copy All</button>
+        <span id="pitch-count-lbl" class="icp-badge">0 Generated</span>
+      </div>
+      <textarea id="pitch-bulk-output" class="icp-textarea" style="min-height:480px;" placeholder="Generated emails will appear here..."></textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  var offerings = [
+    "Core Platform / Product", "Consulting Service", "Managed Service Program",
+    "Subscription Plan", "Implementation Package", "Support and Maintenance Plan",
+    "Training and Onboarding Program", "Custom Integration Service", "Analytics and Reporting Add-on",
+    "Mobile / App Experience", "Enterprise Tier Offering", "Starter / SMB Package",
+    "White-Label Solution", "On-Demand Service Add-on", "Loyalty / Membership Program",
+    "Financing or Leasing Option", "Bundled Solution Package", "Marketplace Listing",
+    "API / Developer Access", "Certification Program"
+  ];
+
+  var keywordCategories = [
+    "Pricing and Cost Comparison", "Vendor and Provider Evaluation Criteria",
+    "Free Trial, Demo and Sample Requests", "Implementation and Onboarding Support",
+    "Customer Reviews and Case Studies", "ROI and Value Analysis"
+  ];
+
+  var faqCategories = [
+    "Product Reliability and Quality", "Onboarding and Setup Timeline",
+    "Customer Support and Service Levels", "Data Privacy and Security",
+    "Integration and Compatibility", "Pricing and Contract Terms"
+  ];
+
+  var adCategories = [
+    "Cut Operating Costs and Save Time", "Improve Customer Experience and Retention",
+    "Boost Team Productivity and Efficiency", "Reduce Risk and Stay Compliant",
+    "Scale Operations Without the Growing Pains", "Win a Real Competitive Edge"
+  ];
+
+  var pitchCategories = [
+    "Budget Constraints and Cost Justification", "Switching Costs From an Existing Vendor",
+    "Limited Internal Resources to Implement", "Uncertainty About Rollout Timeline",
+    "Difficulty Proving ROI to Leadership"
+  ];
+
+  var industries = [
+    "Retail and E-Commerce", "Healthcare and Medical Services", "Manufacturing and Industrial",
+    "Financial Services and Banking", "Insurance", "Education and EdTech",
+    "Real Estate and Property Management", "Hospitality and Travel", "Automotive",
+    "Construction and Building Materials", "Transportation and Logistics", "Legal Services",
+    "Non-Profit and NGO", "Government and Public Sector", "Agriculture and AgTech",
+    "Energy and Utilities", "Media and Entertainment", "Telecommunications",
+    "Pharmaceuticals and Life Sciences", "Consumer Packaged Goods", "Professional and Business Services",
+    "Sports, Fitness and Recreation", "Food and Beverage", "Fashion and Apparel",
+    "Beauty and Personal Care", "Gaming and Entertainment Tech", "Environmental and Sustainability Services",
+    "Technology and SaaS", "Wholesale and Distribution", "Home Services and Trades"
+  ];
+
+  var roles = [
+    "Chief Executive Officer (CEO)", "Chief Operating Officer (COO)", "Chief Financial Officer (CFO)",
+    "Chief Marketing Officer (CMO)", "Chief Technology Officer (CTO)", "VP of Sales",
+    "VP of Marketing", "VP of Operations", "VP of Product",
+    "Director of Procurement", "Director of Customer Success", "Director of Operations",
+    "Director of Finance", "Director of Human Resources", "Director of IT",
+    "Head of Growth", "Head of Supply Chain", "Head of Business Development",
+    "Business Owner / Founder", "General Manager", "Director of Strategy",
+    "Regional Sales Manager", "Store / Branch Manager", "Practice Manager",
+    "Facilities Manager", "Purchasing Manager", "Office Manager",
+    "Franchise Owner", "Program Director", "Independent Consultant / Buyer"
+  ];
+
+  var abmMasterBlueprints = {
+    focus: "Operational efficiency gains and measurable account growth",
+    pain: "manual, disconnected processes that slow decisions and quietly inflate costs.",
+    hook: "As teams grow, ad-hoc workarounds stop scaling and start creating real business risk. {PRODUCT} replaces the patchwork with one system built to keep pace with the business.",
+    discovery1: "How is your team currently handling this today, and where does it slow you down the most?",
+    discovery2: "What would need to be true for this to become a priority in the next two quarters?",
+    coreSol: "{PRODUCT} centralizes the workflow into a single, measurable system your team already knows how to use.",
+    outcome: "Fewer manual handoffs, faster decisions, and a clear before/after story leadership can point to."
+  };
+
+  var keywordTemplates = [
+    "best {offering} for small business", "{product} pricing and plans",
+    "how much does {product} cost", "{product} vs competitors comparison",
+    "affordable {offering} services near me", "top rated {product} providers 2026",
+    "{product} reviews and ratings", "enterprise {product} solutions",
+    "{product} for startups", "hire a {offering} consultant",
+    "{product} providers near me", "buy {product} online",
+    "request a quote for {product}", "compare {product} vendors",
+    "{product} cost calculator", "local {offering} companies",
+    "{product} company near me", "schedule a demo of {product}",
+    "{product} free trial signup", "best {product} for growing teams",
+    "{product} implementation cost breakdown", "{offering} contract terms explained",
+    "is {product} worth the investment", "{product} customer support contact",
+    "{product} onboarding process explained", "{product} case studies and results",
+    "{product} roi calculator", "{product} integration with existing tools",
+    "{product} vs building in-house", "{product} for multi-location businesses",
+    "{product} cancellation policy", "{product} data security and compliance",
+    "{product} customer testimonials", "{product} setup fees explained",
+    "{product} monthly subscription cost", "{product} annual contract discount",
+    "{product} for franchise operations", "{product} bulk pricing options",
+    "{product} trial period length", "{product} refund policy",
+    "{product} vs manual process", "{product} for multiple departments",
+    "{product} training and resources", "{product} mobile app features",
+    "{product} api and developer docs", "{product} white label options",
+    "{product} for nonprofit organizations", "{product} government pricing",
+    "{product} scalability for growing companies", "{product} success stories",
+    "switching to {product} from a competitor", "{product} implementation timeline",
+    "{product} for remote teams", "{product} security certifications",
+    "{product} customer service reviews", "{product} hidden fees to watch for",
+    "{product} vs spreadsheet tracking", "{product} demo request form",
+    "{product} contract negotiation tips", "{product} vendor comparison chart",
+    "{product} for {category}", "{offering} near me open now",
+    "{product} same day setup", "{product} onboarding checklist",
+    "{product} pilot program", "{product} procurement process",
+    "{product} budget approval template", "how to negotiate {product} pricing",
+    "{product} renewal terms", "{product} alternatives worth considering",
+    "{product} for {category} teams", "how to choose the right {offering}",
+    "{product} buyers guide", "{product} total cost of ownership",
+    "{product} feature comparison chart", "{product} for enterprise procurement teams",
+    "{product} implementation partners near me", "{product} customer onboarding specialist",
+    "{product} support sla details", "{product} vs outsourcing",
+    "what to look for in a {offering}", "{product} quote request form"
+  ];
+
+  var faqTemplates = [
+    { q: "How long does it take to get {product} up and running?", a: "Most customers are fully onboarded within 1-3 weeks, depending on the {offering} you choose. Our team walks you through setup so you are not left figuring it out alone." },
+    { q: "What does {product} cost?", a: "Pricing depends on team size and which {offering} you need. We will give you an exact number after a short call, no surprise fees added later." },
+    { q: "Do you offer a free trial?", a: "Yes, most plans include a trial period so you can test {product} with your own data before committing to anything." },
+    { q: "Can {product} integrate with the tools we already use?", a: "In most cases, yes. {product} is built to connect with common business tools, and our team can confirm compatibility with your specific stack." },
+    { q: "What happens if we want to cancel?", a: "You can cancel before renewal with no penalty. We do not lock customers into contracts they cannot get out of." },
+    { q: "Is our data secure with {product}?", a: "Yes. {company} follows standard industry security practices, and we are happy to walk your team through our data handling policies directly." },
+    { q: "Do you offer support after onboarding?", a: "Every customer gets ongoing support, not just help during setup, it is included in every plan." },
+    { q: "How is {product} different from other {category} tools?", a: "We built {product} specifically to solve {category} without forcing you to bolt on three other tools to make it work." },
+    { q: "Can we start small and scale up later?", a: "Yes, most customers start with a single {offering} and expand once they see results in the first quarter." },
+    { q: "What kind of businesses use {product}?", a: "We work with companies of all sizes, from small teams to multi-location enterprises across several industries." },
+    { q: "Do you offer discounts for annual contracts?", a: "Yes, annual plans typically come with a meaningful discount compared to paying month to month." },
+    { q: "How do we know if {product} is the right fit?", a: "The best way is a short call, we will ask about your current process and tell you honestly if we are a good fit or not." },
+    { q: "What is included in the {offering}?", a: "It includes setup, training, and ongoing support, not just access to the platform itself." },
+    { q: "Will we need extra staff to manage {product}?", a: "No, it is designed to fit into your existing team's workflow without adding headcount." },
+    { q: "How often do you release updates?", a: "We ship improvements regularly and always give customers notice before anything changes their day-to-day workflow." },
+    { q: "Can multiple team members use {product} at once?", a: "Yes, most plans support multiple users with different permission levels built in." },
+    { q: "Do you provide training for our team?", a: "Yes, onboarding includes live training sessions plus documentation your team can reference later." },
+    { q: "What if {product} does not work for our use case?", a: "That is exactly what the trial period is for, you can test it against your real workflow before signing anything." },
+    { q: "How do you handle customer support requests?", a: "You will have a direct point of contact, plus access to our support team for day-to-day questions." },
+    { q: "Is there a setup fee?", a: "Some {offering} options include a one-time setup fee, and we will always disclose that upfront before you commit." },
+    { q: "Can {product} handle multiple locations or departments?", a: "Yes, it is built to scale across locations without needing a separate system for each one." },
+    { q: "How does pricing scale as we grow?", a: "Pricing is tiered by usage, so a small team is not paying enterprise rates before they need to." },
+    { q: "Do you offer a money-back guarantee?", a: "Terms vary by plan, our team can confirm exactly what applies before you sign." },
+    { q: "What is the difference between the {offering} and the enterprise plan?", a: "The enterprise tier adds dedicated support, custom integrations, and higher usage limits." },
+    { q: "How long is the typical contract term?", a: "Most customers start on a month-to-month or annual plan, we do not push multi-year lock-ins." },
+    { q: "Can we customize {product} for our specific process?", a: "Yes, the {offering} includes configuration options, and our team can help tailor it during onboarding." },
+    { q: "What happens to our data if we cancel?", a: "You can export your data before closing your account, nothing is held hostage." },
+    { q: "Do you have references we can talk to?", a: "Yes, we can connect you with current customers in a similar situation to yours." },
+    { q: "How is {product} priced, per user or flat rate?", a: "It depends on the {offering}, but most plans are priced per user with volume discounts available." },
+    { q: "What is the onboarding process actually like?", a: "It starts with a kickoff call, then a guided setup, then training, most teams are live within a couple weeks." },
+    { q: "Can we try before we buy?", a: "Yes, a trial or guided demo is the standard first step before any contract discussion." },
+    { q: "Do you support businesses outside our region?", a: "In most cases yes, though certain {offering} options may vary by location, we will confirm during your call." },
+    { q: "How do you handle {category} specifically?", a: "It is one of the areas we get asked about most, so it is built into the core {offering} rather than sold as an add-on." },
+    { q: "What if our needs change after we sign up?", a: "You can upgrade, downgrade, or adjust your {offering} as your needs change, it is not locked in." },
+    { q: "Is there a limit to how much we can use {product}?", a: "Usage limits depend on your plan, and we will flag it well before you would ever hit a ceiling." },
+    { q: "How quickly can support respond to an issue?", a: "Response times depend on plan tier, but most questions get a same-day reply." },
+    { q: "Do you offer implementation help or is it self-serve?", a: "Both are available, some customers prefer a guided rollout, others prefer to move at their own pace." },
+    { q: "What does the {offering} not include?", a: "We are upfront about this during the sales call so there are no surprises after you sign." },
+    { q: "How do you compare to doing this manually?", a: "Most customers save several hours a week once they move off manual processes onto {product}." },
+    { q: "Can we get a custom quote based on our team size?", a: "Yes, pricing is tailored to your team size and which {offering} best fits your workflow." },
+    { q: "What industries do you work with most?", a: "We work across several industries, though a good portion of our customers come from similar use cases to yours." },
+    { q: "Is training included or is it an extra cost?", a: "Core training is included with every {offering}, advanced sessions may be available as an add-on." },
+    { q: "How do you handle compliance requirements?", a: "We can walk through our compliance documentation on a call, happy to answer specifics for your industry." },
+    { q: "What is the fastest way to get started?", a: "Book a short call, and if it is a fit, most teams can be set up within the same week." },
+    { q: "Do you offer volume discounts for larger teams?", a: "Yes, larger teams typically qualify for volume-based pricing on most {offering} plans." },
+    { q: "What happens during the first week after signup?", a: "You will get a kickoff call, initial setup, and a checklist so your team knows exactly what to expect." },
+    { q: "Can we pause our account instead of cancelling?", a: "In most cases yes, reach out to your account contact and we can work out a pause option." },
+    { q: "How do you handle onboarding for larger, multi-team rollouts?", a: "We assign a dedicated point of contact and phase the rollout so each team is not overwhelmed at once." },
+    { q: "Is {product} built for our specific business size?", a: "We work with both small teams and larger organizations, the {offering} is scaled to fit either." },
+    { q: "What kind of reporting or analytics is included?", a: "Most plans include standard reporting, with more advanced analytics available on higher tiers." },
+    { q: "How do we migrate our existing data over?", a: "Our team handles most of the migration during onboarding so you are not doing it manually." },
+    { q: "Do you offer a dedicated account manager?", a: "Yes, on most plans you will have a named contact rather than a generic support queue." },
+    { q: "What is your policy on price increases?", a: "We give advance notice before any pricing changes take effect, no surprise increases mid-contract." },
+    { q: "Can we speak to sales without committing to anything?", a: "Absolutely, the first call is just a conversation to see if it makes sense, no obligation." },
+    { q: "How do you handle {category} for larger enterprise accounts?", a: "Enterprise accounts get a tailored approach to {category}, usually with a dedicated implementation lead." }
+  ];
+
+  var headlineTemplates = [
+    "{company}: {offering} Built for Real Teams", "Stop Wasting Time on Manual {offering}",
+    "{product} - Trusted by Growing Businesses", "Get a Free Quote for {product} Today",
+    "{offering} That Actually Scales With You", "See Why Teams Switch to {company}",
+    "{product}: Setup in Days, Not Months", "Cut Costs With Smarter {offering}",
+    "{company} Helps You {category}", "Try {product} Free for 14 Days",
+    "{offering} Pricing That Makes Sense", "Join Hundreds of Businesses Using {product}",
+    "{product}: No Long-Term Contracts", "Ready to {category}? Start Here.",
+    "{company} Makes {offering} Simple", "Get Your {product} Demo Today",
+    "{product} - Built for Small Teams", "Enterprise-Grade {offering}, SMB Pricing",
+    "{company}: {offering} Without the Headaches", "Talk to Our Team About {product}",
+    "{product} Reviews: See What Customers Say", "Switch to {product} in Under a Week",
+    "{offering} That Pays for Itself", "{company} - Rated by Real Customers",
+    "Request a Custom {product} Quote", "{product}: Everything You Need, Nothing Extra",
+    "Save Hours Every Week With {product}", "{offering} for Teams That Are Scaling Fast",
+    "{company}: Your {offering} Partner", "See {product} in Action, Book a Demo",
+    "{product} - Trusted Across Industries", "Simplify {offering} With {company}",
+    "{product}: Built to {category}", "No Setup Fees on Select {offering} Plans",
+    "{company} - {product} Done Right", "Get Started With {product} in Minutes",
+    "{offering} Backed by Real Support", "{product}: Flexible Plans for Every Team",
+    "Compare {product} to the Competition", "{product} - Built by People Who Get It",
+    "Free Trial. No Credit Card Required.", "{offering} Without the Enterprise Price Tag",
+    "{product}: Ask Us Anything", "Your Team Deserves Better {offering}",
+    "{company}: The {offering} Teams Actually Like", "{product} - Now With Faster Onboarding",
+    "Get {product} Pricing in 60 Seconds", "{offering} That Grows When You Do",
+    "{company}: {product}, Simplified", "Book a 15-Minute {product} Call",
+    "{product}: Loved by Operations Teams", "Skip the Spreadsheets. Try {product}.",
+    "{offering} Support That Does Not Disappear", "{company} - {offering} for Every Budget",
+    "{product}: Real Results in 30 Days", "Talk to a Human About {product}",
+    "{offering} Made for Busy Teams", "{product}: Start Free, Upgrade Anytime",
+    "{company} - {category}, Guaranteed", "{product}: The {offering} Alternative You Wanted"
+  ];
+
+  var descriptionTemplates = [
+    "{company} helps teams {category_lower} with {product}, no long onboarding, no confusing pricing. Book a quick call and see if it is a fit.",
+    "Tired of managing {offering_lower} manually? {product} gives your team one place to handle it, backed by real support from {company}.",
+    "{product} was built for teams that need to {category_lower} without adding headcount. See what {company} customers are saying.",
+    "Stop losing hours to spreadsheets and workarounds. {product}'s {offering_lower} is built to {category_lower} from day one.",
+    "{company} works with teams of every size to {category_lower} through {product}. Start with a free trial, no card required.",
+    "Looking for a better {offering_lower}? {product} gives you the tools to {category_lower}, plus support that actually responds.",
+    "{product} pairs a simple {offering_lower} with hands-on onboarding from {company}, so your team is live in days, not months.",
+    "See why growing teams choose {product} over the alternatives. Transparent pricing, real support, and a {offering_lower} built to last.",
+    "{company}'s {offering_lower} helps you {category_lower} without the enterprise price tag or the enterprise-sized learning curve.",
+    "Ready to {category_lower}? {product} makes it simple with a {offering_lower} designed around how your team actually works.",
+    "No more guessing on ROI. {product} gives you clear reporting on your {offering_lower} so you can prove results to leadership.",
+    "{company} built {product} for teams who have outgrown manual processes and need a real {offering_lower} that scales with them.",
+    "Get started with {product} in minutes, not weeks. Our {offering_lower} is designed to {category_lower} right out of the gate.",
+    "Switching from a legacy vendor? {product} makes migration easy, and {company}'s team handles the heavy lifting for you.",
+    "{product}'s {offering_lower} is trusted by teams who need to {category_lower} without sacrificing speed or accuracy.",
+    "Every {company} plan includes onboarding, training, and support, not just access to the {offering_lower} itself.",
+    "{product} was designed with one goal: help your team {category_lower} without adding more tools to manage.",
+    "From setup to scale, {company} is with you every step. {product}'s {offering_lower} adapts as your business grows.",
+    "Compare {product} to what you are using now, most teams see a clear difference in their {offering_lower} within weeks.",
+    "{company} makes it easy to {category_lower}. Try {product} free and see the difference in your first month.",
+    "Your team should not have to choose between affordability and quality. {product}'s {offering_lower} delivers both.",
+    "{product} gives your team the {offering_lower} it needs to {category_lower}, backed by a support team that picks up the phone.",
+    "Built for busy teams: {product}'s {offering_lower} sets up fast and starts showing results within the first few weeks.",
+    "{company} has helped teams across multiple industries {category_lower}, see if {product} is the right fit for yours.",
+    "Not sure where to start? A quick call with {company} will show you exactly how {product}'s {offering_lower} fits your workflow.",
+    "{product} replaces scattered tools and manual tracking with one {offering_lower} built to {category_lower} reliably.",
+    "Teams choose {company} because {product} actually delivers on its promises, transparent pricing, real onboarding, real support.",
+    "Whether you are a five-person team or a multi-location operation, {product}'s {offering_lower} is built to fit.",
+    "{product} takes the guesswork out of {category_lower} with a {offering_lower} that is simple to set up and easy to manage.",
+    "{company} offers flexible {offering_lower} options so you only pay for what your team actually needs.",
+    "See measurable results within your first quarter. {product}'s {offering_lower} is built to {category_lower} from day one.",
+    "{product} was built by people who have dealt with the same problems your team is facing right now.",
+    "Get a clear, honest quote for {product}'s {offering_lower}, no hidden fees, no pressure, just a straight answer.",
+    "{company} keeps things simple: one {offering_lower}, transparent pricing, and support that is there when you need it.",
+    "{product} helps teams {category_lower} while keeping costs predictable, no surprise line items at renewal.",
+    "Thousands of hours saved, fewer manual errors, happier teams, that is what {product}'s {offering_lower} delivers.",
+    "{company} designed {product} to solve a specific problem: helping teams {category_lower} without the usual headaches.",
+    "From onboarding to renewal, {company} treats {product} customers like partners, not just another account.",
+    "{product}'s {offering_lower} is easy to test, start with a trial and see the impact on your own numbers.",
+    "If your current setup cannot {category_lower} the way you need, it might be time to see what {product} can do."
+  ];
+
+  var emailSubjects = [
+    "Quick question about {category_lower}", "A thought on {category_lower} at [Company Name]",
+    "Re: {category_lower}", "Helping teams with {category_lower}",
+    "15 minutes on {category_lower}?", "Following up on {category_lower}"
+  ];
+
+  var emailOpeners = [
+    "Hope your week is off to a good start.",
+    "I will keep this short since I know your inbox is probably full.",
+    "Not sure if this is on your radar right now, but thought it was worth a quick note.",
+    "Reaching out because a few teams I have spoken with lately have run into something similar.",
+    "Saw a bit about your team's growth recently, so this felt timely."
+  ];
+
+  var emailBodyProblem = [
+    "A lot of teams I talk to run into {category_lower} right around the point where their current process stops keeping up.",
+    "One thing that comes up again and again is {category_lower}, it tends to quietly eat time and budget until someone finally looks into it.",
+    "{category_lower} is usually the thing that gets brought up in a planning meeting, then gets put off for another quarter.",
+    "Most teams do not realize how much {category_lower} is costing them until they actually sit down and measure it."
+  ];
+
+  var emailBodyValue = [
+    "That is actually the exact problem {product} was built to solve. {company} works with teams to put a {offering_lower} in place that handles it without adding more work to your plate.",
+    "With {product}, {company} has helped teams move past this with a {offering_lower} that is built to be live within weeks, not quarters.",
+    "{product} gives your team a {offering_lower} that is specifically designed around this, {company} handles the heavy lifting during rollout.",
+    "That is where {product} tends to help, {company}'s {offering_lower} is built to get you a working answer fast, without a long, drawn-out implementation."
+  ];
+
+  var emailCTAs = [
+    "Would it be worth a short 15-minute call to see if this is even relevant for your team?",
+    "If it is helpful, I can send over a couple of examples of how similar teams approached this.",
+    "No pressure either way, happy to send more info if that is easier than a call.",
+    "If now is not the right time, just let me know and I will follow up down the road instead."
+  ];
+
+  var cart = [];
+
+  function getConfig() {
+    var companyEl = document.getElementById('cfg-company');
+    var productEl = document.getElementById('cfg-product');
+    var company = (companyEl.value || "Your Company").trim();
+    var product = (productEl.value || "your product or service").trim();
+    return { company: company, product: product };
+  }
+
+  function fillTemplate(str, product, offering, category, company) {
+    return str
+      .split("{product}").join(product)
+      .split("{offering}").join(offering)
+      .split("{offering_lower}").join(offering.toLowerCase())
+      .split("{category}").join(category)
+      .split("{category_lower}").join(category.toLowerCase())
+      .split("{company}").join(company);
+  }
+
+  function icpInit() {
+    if (window.__icpPlannerInitDone) return;
+    window.__icpPlannerInitDone = true;
+
+    var indSel = document.getElementById('sel-industry');
+    var rolSel = document.getElementById('sel-role');
+
+    for (var i = 0; i < industries.length; i++) {
+      indSel.options.add(new Option(industries[i], industries[i]));
+    }
+    for (var j = 0; j < roles.length; j++) {
+      rolSel.options.add(new Option(roles[j], roles[j]));
+    }
+
+    icpSetupFilterDropdowns('fk', keywordCategories);
+    icpSetupFilterDropdowns('fq', faqCategories);
+    icpSetupFilterDropdowns('fh', adCategories);
+    icpSetupFilterDropdowns('fd', adCategories);
+    icpSetupFilterDropdowns('fp', pitchCategories);
+
+    icpUpdateCartAndUI();
+  }
+
+  function icpSetupFilterDropdowns(prefix, specializedArray) {
+    var tSel = document.getElementById(prefix + '-tech');
+    var cSel = document.getElementById(prefix + '-category');
+
+    tSel.options.add(new Option("-- All Offerings --", "ALL"));
+    cSel.options.add(new Option("-- All Focus Areas --", "ALL"));
+
+    for (var i = 0; i < offerings.length; i++) {
+      tSel.options.add(new Option(offerings[i], offerings[i]));
+    }
+    for (var j = 0; j < specializedArray.length; j++) {
+      cSel.options.add(new Option(specializedArray[j], specializedArray[j]));
+    }
+  }
+
+  function getFiltered(list, selectedValue) {
+    return selectedValue === "ALL" ? list : [selectedValue];
+  }
+
+  function icpAddToCart() {
+    if (cart.length >= 10) return;
+    var ind = document.getElementById('sel-industry').value;
+    var rol = document.getElementById('sel-role').value;
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].ind === ind && cart[i].rol === rol) return;
+    }
+
+    cart.push({
+      id: Date.now() + Math.random().toString(36).substr(2, 5),
+      ind: ind,
+      rol: rol
+    });
+    icpUpdateCartAndUI();
+  }
+
+  function icpRemoveCartItem(itemId) {
+    var next = [];
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].id !== itemId) next.push(cart[i]);
+    }
+    cart = next;
+    icpUpdateCartAndUI();
+  }
+
+  function icpClearCart() {
+    cart = [];
+    icpUpdateCartAndUI();
+  }
+
+  function icpUpdateCartAndUI() {
+    var cartBox = document.getElementById('cart-container');
+    var queuePane = document.getElementById('abm-queue-pane');
+    document.getElementById('queue-counter').innerText = cart.length + " Active";
+
+    if (cart.length === 0) {
+      cartBox.innerHTML = '<p class="icp-empty">Your planning cart is empty.</p>';
+      queuePane.innerHTML = '<p class="icp-empty">No accounts mapped yet. Choose an industry and persona, then add them to the cart.</p>';
+      return;
+    }
+
+    var cfg = getConfig();
+    var product = cfg.product;
+
+    var cartHtml = "";
+    for (var i = 0; i < cart.length; i++) {
+      var item = cart[i];
+      cartHtml += '<div class="icp-cart-item"><span><strong>' + item.ind + '</strong><br><small>' + item.rol + '</small></span><button class="icp-btn-remove" onclick="icpRemoveCartItem(\'' + item.id + '\')">Remove</button></div>';
+    }
+    cartBox.innerHTML = cartHtml;
+
+    var queueHtml = "";
+    for (var idx = 0; idx < cart.length; idx++) {
+      var it = cart[idx];
+      var hook = abmMasterBlueprints.hook.replace("{PRODUCT}", product);
+      var coreSol = abmMasterBlueprints.coreSol.replace("{PRODUCT}", product);
+      queueHtml += ''
+        + '<div class="icp-blueprint-card">'
+        + '<div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:10px; flex-wrap:wrap; gap:6px;">'
+        + '<span class="icp-record-tag">ACCOUNT PLAYBOOK #' + (idx + 1) + '</span>'
+        + '<span style="font-size:0.78rem; color:var(--ink-soft); font-weight:600;">Industry + Persona Blueprint</span>'
+        + '</div>'
+        + '<div class="icp-text"><strong>Industry:</strong> ' + it.ind + '</div>'
+        + '<div class="icp-text"><strong>Buyer Persona:</strong> ' + it.rol + '</div>'
+        + '<div class="icp-text" style="background:var(--paper); border-left:3px solid var(--navy); padding:8px; border-radius:4px;"><strong>Strategic Focus:</strong> ' + abmMasterBlueprints.focus + '</div>'
+        + '<div class="icp-text" style="background:var(--rust-soft); border-left:3px solid var(--rust); padding:8px; border-radius:4px; margin-top:8px;"><strong>Likely Pain Point:</strong> Teams in this role often deal with ' + abmMasterBlueprints.pain + '</div>'
+        + '<div class="icp-section-title">Step 1 - Outreach Hook</div>'
+        + '<div class="icp-text">"For teams in ' + it.ind + ', the ' + it.rol + ' is often stuck managing ' + abmMasterBlueprints.pain + ' ' + hook + '"</div>'
+        + '<div class="icp-section-title">Step 2 - Discovery Questions</div>'
+        + '<div class="icp-text"><strong>Question 1:</strong> ' + abmMasterBlueprints.discovery1 + '<br><br><strong>Question 2:</strong> ' + abmMasterBlueprints.discovery2 + '</div>'
+        + '<div class="icp-section-title">Step 3 - Solution Mapping</div>'
+        + '<div class="icp-text">&bull; <strong>How it helps:</strong> ' + coreSol + '<br>&bull; <strong>Expected outcome:</strong> ' + abmMasterBlueprints.outcome + '</div>'
+        + '</div>';
+    }
+    queuePane.innerHTML = queueHtml;
+  }
+
+  function icpGenerateBulkKeywords() {
+    var cfg = getConfig();
+    var product = cfg.product, company = cfg.company;
+    var tF = getFiltered(offerings, document.getElementById('fk-tech').value);
+    var cF = getFiltered(keywordCategories, document.getElementById('fk-category').value);
+    var lines = [];
+
+    for (var i = 0; i < keywordTemplates.length; i++) {
+      var off = tF[i % tF.length];
+      var cat = cF[i % cF.length];
+      var line = fillTemplate(keywordTemplates[i], product, off, cat, company);
+      lines.push((i + 1) + ". " + line);
+    }
+
+    document.getElementById('kw-bulk-output').value = lines.join("\n");
+    document.getElementById('kw-count-lbl').innerText = lines.length + " Generated";
+  }
+
+  function icpGenerateBulkQuestions() {
+    var cfg = getConfig();
+    var product = cfg.product, company = cfg.company;
+    var tF = getFiltered(offerings, document.getElementById('fq-tech').value);
+    var cF = getFiltered(faqCategories, document.getElementById('fq-category').value);
+    var lines = [];
+
+    for (var i = 0; i < faqTemplates.length; i++) {
+      var off = tF[i % tF.length];
+      var cat = cF[i % cF.length];
+      var q = fillTemplate(faqTemplates[i].q, product, off, cat, company);
+      var a = fillTemplate(faqTemplates[i].a, product, off, cat, company);
+      lines.push("Q" + (i + 1) + ": " + q);
+      lines.push("A" + (i + 1) + ": " + a + "\n");
+    }
+
+    document.getElementById('faq-bulk-output').value = lines.join("\n");
+    document.getElementById('faq-count-lbl').innerText = faqTemplates.length + " Generated";
+  }
+
+  function icpGenerateBulkHeadlines() {
+    var cfg = getConfig();
+    var product = cfg.product, company = cfg.company;
+    var tF = getFiltered(offerings, document.getElementById('fh-tech').value);
+    var cF = getFiltered(adCategories, document.getElementById('fh-category').value);
+    var lines = [];
+
+    for (var i = 0; i < headlineTemplates.length; i++) {
+      var off = tF[i % tF.length];
+      var cat = cF[i % cF.length];
+      var line = fillTemplate(headlineTemplates[i], product, off, cat, company);
+      lines.push((i + 1) + ". " + line);
+    }
+
+    document.getElementById('hl-bulk-output').value = lines.join("\n");
+    document.getElementById('hl-count-lbl').innerText = lines.length + " Generated";
+  }
+
+  function icpGenerateBulkDescriptions() {
+    var cfg = getConfig();
+    var product = cfg.product, company = cfg.company;
+    var tF = getFiltered(offerings, document.getElementById('fd-tech').value);
+    var cF = getFiltered(adCategories, document.getElementById('fd-category').value);
+    var lines = [];
+
+    for (var i = 0; i < descriptionTemplates.length; i++) {
+      var off = tF[i % tF.length];
+      var cat = cF[i % cF.length];
+      var line = fillTemplate(descriptionTemplates[i], product, off, cat, company);
+      lines.push((i + 1) + ". " + line + "\n");
+    }
+
+    document.getElementById('desc-bulk-output').value = lines.join("\n");
+    document.getElementById('desc-count-lbl').innerText = descriptionTemplates.length + " Generated";
+  }
+
+  function icpGenerateBulkPitches() {
+    var cfg = getConfig();
+    var product = cfg.product, company = cfg.company;
+    var tF = getFiltered(offerings, document.getElementById('fp-tech').value);
+    var cF = getFiltered(pitchCategories, document.getElementById('fp-category').value);
+
+    var cap = Math.min(tF.length * cF.length, 20);
+    var blocks = [];
+    var n = 0;
+
+    for (var i = 0; i < tF.length; i++) {
+      if (n >= cap) break;
+      for (var j = 0; j < cF.length; j++) {
+        if (n >= cap) break;
+        var off = tF[i];
+        var cat = cF[j];
+
+        var subject = fillTemplate(emailSubjects[n % emailSubjects.length], product, off, cat, company).replace("[Company Name]", "[Their Company]");
+        var opener = emailOpeners[n % emailOpeners.length];
+        var problem = fillTemplate(emailBodyProblem[n % emailBodyProblem.length], product, off, cat, company);
+        var value = fillTemplate(emailBodyValue[n % emailBodyValue.length], product, off, cat, company);
+        var cta = emailCTAs[n % emailCTAs.length];
+
+        var email = "=================================================================\n";
+        email += "OUTREACH EMAIL #" + (n + 1) + "  |  Offering: " + off + "  |  Objection: " + cat + "\n";
+        email += "=================================================================\n\n";
+        email += "Subject: " + subject + "\n\n";
+        email += "Hi [First Name],\n\n";
+        email += opener + "\n\n";
+        email += problem + "\n\n";
+        email += value + "\n\n";
+        email += cta + "\n\n";
+        email += "Best,\n[Your Name]\n" + company + "\n[your email] | [your phone number]\n\n";
+
+        blocks.push(email);
+        n++;
+      }
+    }
+
+    document.getElementById('pitch-bulk-output').value = blocks.join("");
+    document.getElementById('pitch-count-lbl').innerText = blocks.length + " Generated";
+  }
+
+  function icpCopyTextData(elementId) {
+    var area = document.getElementById(elementId);
+    if (!area.value) return;
+    area.focus();
+    area.select();
+    try {
+      document.execCommand('copy');
+    } catch (e) {}
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(area.value).catch(function() {});
+    }
+    alert("Copied to clipboard.");
+  }
+
+  function icpSwitchView(viewId, element) {
+    var views = document.querySelectorAll('.icp-view');
+    for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
+    var btns = document.querySelectorAll('.icp-nav-btn');
+    for (var j = 0; j < btns.length; j++) btns[j].classList.remove('active');
+    document.getElementById(viewId).classList.add('active');
+    element.classList.add('active');
+  }
+
+  document.addEventListener('DOMContentLoaded', icpInit);
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    icpInit();
+  }
+
+  window.icpSwitchView = icpSwitchView;
+  window.icpAddToCart = icpAddToCart;
+  window.icpRemoveCartItem = icpRemoveCartItem;
+  window.icpClearCart = icpClearCart;
+  window.icpGenerateBulkKeywords = icpGenerateBulkKeywords;
+  window.icpGenerateBulkQuestions = icpGenerateBulkQuestions;
+  window.icpGenerateBulkHeadlines = icpGenerateBulkHeadlines;
+  window.icpGenerateBulkDescriptions = icpGenerateBulkDescriptions;
+  window.icpGenerateBulkPitches = icpGenerateBulkPitches;
+  window.icpCopyTextData = icpCopyTextData;
+})();
+</script>
+</body>
+</html>
