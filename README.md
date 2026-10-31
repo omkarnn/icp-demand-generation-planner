@@ -1,2 +1,5 @@
-# icp-demand-generation-planner
-Free ICP &amp; Demand Generation Planner that helps B2B marketers define ideal customer profiles, identify target industries, build buyer personas, discover intent keywords, and generate campaign headlines, ad copy, FAQs and cold outreach emails to accelerate targeted demand generation and account-based marketing.
+# ICP & Demand Generation Planner
+
+[🚀 TRY THE LIVE TOOL](https://whatisdigitalmarketing.in/icp-demand-generation-planner/)
+
+Free B2B demand generation planner to build ideal customer profiles, identify target industries, discover buyer intent keywords and generate campaign content and outreach emails.
